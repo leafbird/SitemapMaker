@@ -40,15 +40,20 @@ public sealed class OutputWriter : IDisposable
     {
         this.writer.WriteLine();
     }
+    
+    public void Write(string message)
+    {
+        this.writer.Write(message);
+    }
 
-    public void WriteList(string message)
+    public void WriteList(char symbol, string message)
     {
         // https://docs.github.com/ko/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#nested-lists
         // 깃허브 들여쓰기는 상위 항목에서 텍스트가 나오는 시점까지 해야 함. 일단은 2칸 들여쓰기로 통일.
         const int indentSize = 2;
         string indent = new string(' ', this.indentLevel * indentSize);
 
-        this.writer.WriteLine($"{indent}* {message}");
+        this.writer.WriteLine($"{indent}{symbol} {message}");
     }
 
     public IDisposable Indent(bool isRootCategory) 
