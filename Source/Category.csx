@@ -2,6 +2,7 @@
 #nullable enable
 
 using Cs.Logging;
+using System.Net;
 
 public sealed class Category : IComparable<Category>
 {
@@ -135,7 +136,8 @@ public sealed class Category : IComparable<Category>
             foreach (var file in this.files)
             {
                 var nameOnly = Path.GetFileName(file);
-                writer.WriteList('-', $"[{nameOnly}]({file})");
+                var encodedPath = file.Replace(" ", "%20");
+                writer.WriteList('-', $"[{nameOnly}]({encodedPath})");
             }
 
             writer.WriteLine();
