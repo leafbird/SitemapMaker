@@ -1,3 +1,5 @@
+#load "Category.csx"
+#load "OutputWriter.csx"
 #nullable enable
 
 using Cs.Logging;
@@ -11,8 +13,6 @@ public sealed class SitemapMaker
     {
         this.rootPath = rootPath;
         this.outputFileName = outputFileName;
-        
-        Log.Debug($"rootPath:{this.rootPath} outputFile:{this.outputFileName}");
     }
     
     public static SitemapMaker? Create(IList<string> args)
@@ -32,18 +32,30 @@ public sealed class SitemapMaker
         var rootPath = Path.GetDirectoryName(args[0]);
         var fileName = Path.GetFileName(args[0]);
         
-        if (rootPath is null || fileName is null)
+        if (string.IsNullOrEmpty(rootPath))
         {
-            Log.Error($"outputFile is invalid: {args[0]}");
-            return null;
+            rootPath = "./";
         }
-        
+
+        rootPath = Path.GetFullPath(rootPath);
         return new SitemapMaker(rootPath, fileName);
     }
 
     public void Run()
     {
-        var rootFolder = FolderModel.Create(rootPath);
-        var rootFolder
+        var category = Category.Create(isRoot: true, rootPath);
+
+        using var writer = new OutputWriter(this.outputFileName);
+        
+        writer.WriteHeader(level: 2, "Categories");
+        category.WriteCategoryList(writer);
+        writer.WriteLine();
+
+        writer.WriteLine("---");
+        writer.WriteLine();
+
+        category.WriteFileList(headLevel: 3, writer);
+        
+        Log.Info(writer.ToString());
     }
 }
