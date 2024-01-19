@@ -136,7 +136,10 @@ public sealed class Category : IComparable<Category>
             foreach (var file in this.files)
             {
                 var nameOnly = Path.GetFileName(file);
-                var encodedPath = file.Replace(" ", "%20");
+                var encodedPath = file
+                    .Replace(" ", "%20")
+                    .Replace("\\", "/");
+                    
                 writer.WriteList('-', $"[{nameOnly}]({encodedPath})");
             }
 
