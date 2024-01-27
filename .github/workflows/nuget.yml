@@ -65,7 +65,7 @@ jobs:
         path: ${{env.ARTIFACT_PATH}}
 
     - name: push
-      run: nuget push ${{env.ARTIFACT_PATH}}/**/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
+      run: nuget push ${{env.ARTIFACT_PATH}}/**/*.nupkg -Source https://api.nuget.org/v3/index.json -ApiKey ${{ secrets.NUGET_API_KEY }}
         
 
   push-to-github-package:
@@ -81,7 +81,7 @@ jobs:
         path: ${{env.ARTIFACT_PATH}}
 
     - name: push
-      run : dotnet nuget push ${{env.ARTIFACT_PATH}}/**/*.nupkg --source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json --api-key ${{ secrets.PRIVATE_ACCESS_TOKEN }}
+      run : dotnet nuget push ${{env.ARTIFACT_PATH}}/**/*.nupkg -Source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json -ApiKey ${{ secrets.PRIVATE_ACCESS_TOKEN }}
         
 
   create-relase:
