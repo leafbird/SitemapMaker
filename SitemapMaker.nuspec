@@ -5,7 +5,7 @@
     <version>0.0.1</version>
     <title>SitemapMaker</title>
     <authors>leafbird</authors>
-    <icon>Assets/logo.jpg</icon>
+    <icon>Assets/logo.png</icon>
     <readme>README.md</readme>
     <license type="expression">MIT</license>
     <projectUrl>https://github.com/leafbird/SitemapMaker</projectUrl>
@@ -22,6 +22,6 @@
   <files>
     <file src="Source/*.csx" target="contentsFiles/csx/any" />
     <file src="README.md" target="/" />
-    <file src="Assets/logo.jpg" target="Assets/" />
+    <file src="Assets/logo.png" target="Assets/" />
   </files>
 </package>

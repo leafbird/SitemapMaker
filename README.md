@@ -1,4 +1,8 @@
+![publish nuget](https://github.com/leafbird/SitemapMaker/actions/workflows/nuget.yml/badge.svg)
+
 # Sitemap Maker
+
+![](https://raw.githubusercontent.com/leafbird/SitemapMaker/main/Assets/logo.png)
 
 github의 문서 기록용 depot을 위한 sitemap 생성 스크립트 입니다.
 a sitemap creation script for GitHub's document recording depot.
