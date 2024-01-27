@@ -9,7 +9,7 @@ on:
       - 'v*.*.*'
     
 env:
-  PACKAGE_PATH: ./
+  PACKAGE_PATH: ./Ouptut
   ARTIFACT_PATH: ./Artifacts
 
 jobs:
@@ -36,7 +36,9 @@ jobs:
         dotnet-version: 8.0.x
 
     - name: pack
-      run: dotnet pack -p:PackageVersion=$TAG_VERSION
+      run: |
+        mkdir ${{env.PACKAGE_PATH}}
+        nuget pack SitemapMaker.nuspec -Version $TAG_VERSION -OutputDirectory ${{env.PACKAGE_PATH}}
         
     - name: gather artifacts
       run: |
@@ -63,7 +65,7 @@ jobs:
         path: ${{env.ARTIFACT_PATH}}
 
     - name: push
-      run: dotnet nuget push ${{env.ARTIFACT_PATH}}/**/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
+      run: nuget push ${{env.ARTIFACT_PATH}}/**/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
         
 
   push-to-github-package:
