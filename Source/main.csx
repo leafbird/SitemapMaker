@@ -1,6 +1,5 @@
 #!/usr/bin/env dotnet-script
-// #r "nuget:Cs.Logging, 0.0.23"
-#load "./Source/SitemapMaker.csx"
+#load "./SitemapMaker.csx"
 
 var maker = SitemapMaker.Create(Args);
 if (maker is null)

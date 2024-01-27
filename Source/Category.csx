@@ -5,6 +5,8 @@ using System.Net;
 
 public sealed class Category : IComparable<Category>
 {
+    private static readonly string[] ExceptionFolderNames = [ "packages", "bin", "obj", "node_modules" ];
+
     private readonly bool isRoot;
     private readonly string myPath; // 해당 폴더의 위치
     private readonly string originalName;
@@ -35,7 +37,12 @@ public sealed class Category : IComparable<Category>
         foreach (var subDir in subDirs)
         {
             var nameOnly = Path.GetFileName(subDir); // 마지막 세그먼트만 얻어온다.
-            if (nameOnly is null || nameOnly.StartsWith("."))
+            if (nameOnly is null || nameOnly.StartsWith(".")) // 폴더명이 .으로 시작하면 무시한다.
+            {
+                continue;
+            }
+            
+            if (ExceptionFolderNames.Contains(nameOnly)) // 예외 폴더명이면 무시한다.
             {
                 continue;
             }

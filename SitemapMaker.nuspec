@@ -20,7 +20,7 @@
     </contentFiles>
   </metadata>
   <files>
-    <file src="Source/*.csx" target="contentsFiles/csx/any" />
+    <file src="Source/*.csx" target="contentFiles/csx/any" />
     <file src="README.md" target="/" />
     <file src="Assets/logo.png" target="Assets/" />
   </files>
