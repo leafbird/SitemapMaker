@@ -1,0 +1,107 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: push to nuget.org
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+    
+env:
+  PACKAGE_PATH: ./
+  ARTIFACT_PATH: ./Artifacts
+
+jobs:
+  build:
+    strategy:
+      fail-fast: true
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Get Version from Tag
+      id: get_version
+      run: |
+        TAG_VERSION=$(git describe --tags --abbrev=0 | sed 's/v//')
+        echo "TAG_VERSION=$TAG_VERSION" >> $GITHUB_ENV
+      shell: bash
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.0.x
+
+    - name: pack
+      run: dotnet pack -p:PackageVersion=$TAG_VERSION
+        
+    - name: gather artifacts
+      run: |
+        mkdir ${{env.ARTIFACT_PATH}}
+        cp -r ${{env.PACKAGE_PATH}}/*.nupkg ${{env.ARTIFACT_PATH}}
+      shell: bash
+        
+    - name: upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: nuget
+        path: ${{env.ARTIFACT_PATH}}
+        
+  push-to-nuget:
+    needs: build
+    runs-on: ubuntu-latest
+      
+    steps:
+
+    - name: download artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: nuget
+        path: ${{env.ARTIFACT_PATH}}
+
+    - name: push
+      run: dotnet nuget push ${{env.ARTIFACT_PATH}}/**/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
+        
+
+  push-to-github-package:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: download artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: nuget
+        path: ${{env.ARTIFACT_PATH}}
+
+    - name: push
+      run : dotnet nuget push ${{env.ARTIFACT_PATH}}/**/*.nupkg --source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json --api-key ${{ secrets.PRIVATE_ACCESS_TOKEN }}
+        
+
+  create-relase:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+
+    - name: download artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: nuget
+        path: ${{env.ARTIFACT_PATH}}
+      
+    - name: create release
+      id: create_release
+      uses: ncipollo/release-action@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        draft: false
+        prerelease: false
+        artifacts: ${{env.ARTIFACT_PATH}}/**/*.nupkg
