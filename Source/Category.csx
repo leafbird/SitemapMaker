@@ -1,7 +1,6 @@
 #load "OutputWriter.csx"
 #nullable enable
 
-using Cs.Logging;
 using System.Net;
 
 public sealed class Category : IComparable<Category>
@@ -136,6 +135,7 @@ public sealed class Category : IComparable<Category>
             foreach (var file in this.files)
             {
                 var nameOnly = Path.GetFileNameWithoutExtension(file);
+                // var encodedPath = Uri.EscapeDataString(file); // 이걸 쓰면 한글도 다 볼수없게 escape 됩니다.
                 var encodedPath = file
                     .Replace(" ", "%20")
                     .Replace("\\", "/");

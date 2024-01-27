@@ -1,3 +1,4 @@
+#r "nuget:Cs.Logging, 0.0.23"
 #load "Category.csx"
 #load "OutputWriter.csx"
 #nullable enable

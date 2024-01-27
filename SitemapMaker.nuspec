@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>SitemapMaker</id>
+    <version>0.0.1</version>
+    <title>SitemapMaker</title>
+    <authors>leafbird</authors>
+    <icon>Assets/logo.jpg</icon>
+    <readme>README.md</readme>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/leafbird/SitemapMaker</projectUrl>
+    <repository type="git" url="https://github.com/leafbird/SiteampMaker.git" />
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>It creates readme.md for the github document repository.</description>
+    <releaseNotes>Initial release.</releaseNotes>
+    <tags>sitemap</tags>
+    <copyright>Copyright 2024 leafbird Limited</copyright>
+    <contentFiles>
+        <files include="**/*.*" buildAction="None" copyToOutput="true" flatten="true" />
+    </contentFiles>
+  </metadata>
+  <files>
+    <file src="Source/*.csx" target="contentsFiles/csx/any" />
+    <file src="README.md" target="/" />
+    <file src="Assets/logo.jpg" target="Assets/" />
+  </files>
+</package>
