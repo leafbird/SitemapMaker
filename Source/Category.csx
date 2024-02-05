@@ -119,7 +119,7 @@ public sealed class Category : IComparable<Category>
     {
         if (this.files.Any())
         {
-            writer.WriteList('*', $"[{this.originalName}](#{this.dashedName})");
+            writer.WriteList('*', $"[{this.originalName}](#{this.dashedName}) ({this.files.Count})");
         }
         
         using (writer.Indent(this.isRoot))
